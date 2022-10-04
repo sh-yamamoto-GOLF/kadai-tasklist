@@ -2,29 +2,25 @@
 
 @section('content')
 
-    <h1>メッセージ一覧</h1>
+    <h1>id = {{ $task->id }} のタスク詳細ページ</h1>
 
-    @if (count($tasks) > 0)
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>id</th>
-                    <th>メッセージ</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($messages as $message)
-                <tr>
-                    {{-- メッセージ詳細ページへのリンク --}}
-                    <td>{!! link_to_route('tasks.show', $task->id, ['task' => $task->id]) !!}</td>
-                    <td>{{ $task->content }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @endif
+    <table class="table table-bordered">
+        <tr>
+            <th>id</th>
+            <td>{{ $task->id }}</td>
+        </tr>
+        <tr>
+            <th>タスク</th>
+            <td>{{ $task->content }}</td>
+        </tr>
+    </table>
     
-    {{-- メッセージ作成ページへのリンク --}}
-    {!! link_to_route('tasks.create', '新規メッセージの投稿', [], ['class' => 'btn btn-primary']) !!}
+    {{-- メッセージ編集ページへのリンク --}}
+    {!! link_to_route('tasks.edit', 'このタスクを編集', ['task' => $task->id], ['class' => 'btn btn-light']) !!}
+    
+    {{-- メッセージ削除フォーム --}}
+    {!! Form::model($task, ['route' => ['tasks.destroy', $task->id], 'method' => 'delete']) !!}
+        {!! Form::submit('削除', ['class' => 'btn btn-danger']) !!}
+    {!! Form::close() !!}
 
 @endsection
