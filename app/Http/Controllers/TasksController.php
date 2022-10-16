@@ -53,12 +53,22 @@ class TasksController extends Controller
             'content' => 'required',
         ]);
         
+        // 認証済みユーザ（閲覧者）の投稿として作成（リクエストされた値をもとに作成）
+        $request->user()->tasks()->create([
+            'content' => $request->content,
+            'status' => $request->status,
+            
+        ]);
+        
         // メッセージを作成
-        $task = new Task;
-        $task->status = $request->status;    // 追加
-        $task->content = $request->content;
-        $task->save();
-
+        //$task = new Task;
+        //$task->user_id = $request->user_id;
+        //$task->status = $request->status;    // 追加
+        //$task->content = $request->content;
+        //$task->save();
+        
+        
+        
         // トップページへリダイレクトさせる
         return redirect('/');
     }
