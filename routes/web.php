@@ -1,12 +1,12 @@
 <?php
 
-//Route::get('/', 'TasksController@index');
+Route::get('/', 'TasksController@index');
 
 Route::resource('tasks', 'TasksController');
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Route::get('/', function () {
+//    return view('welcome');
+//});
 
 // ユーザ登録
 Route::get('signup', 'Auth\RegisterController@showRegistrationForm')->name('signup.get');

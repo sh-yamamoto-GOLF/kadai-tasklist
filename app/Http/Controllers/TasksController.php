@@ -20,22 +20,21 @@ class TasksController extends Controller
             // 認証済みユーザを取得
             $user = \Auth::user();
             // ユーザの投稿の一覧を作成日時の降順で取得
-            // （後のChapterで他ユーザの投稿も取得するように変更しますが、現時点ではこのユーザの投稿のみ取得します）
+            // このユーザの投稿のみ取得
             $tasks = $user->tasks()->orderBy('created_at', 'desc')->paginate(10);
 
             $data = [
-                'user' => $user,
                 'tasks' => $tasks,
             ];
         }
         
         // メッセージ一覧を取得
         //$tasks = Task::all();
+        
 
         // メッセージ一覧ビューでそれを表示
-        return view('tasks.index', [
-            'tasks' => $tasks,
-        ]);
+        return view('welcome', $data);
+        
     }
 
     /**
@@ -96,6 +95,10 @@ class TasksController extends Controller
     public function show($id)
     {
         $task = Task::findOrFail($id);
+        //＄taskがログインしているユーザーが投稿したタスクではない場合
+        if($task->user_id !== \Auth::id()){
+            return redirect('/');
+        }
 
         // メッセージ詳細ビューでそれを表示
         return view('tasks.show', [
@@ -113,6 +116,11 @@ class TasksController extends Controller
     {
         // idの値でメッセージを検索して取得
         $task = Task::findOrFail($id);
+        
+        //＄taskがログインしているユーザーが投稿したタスクではない場合
+        if($task->user_id !== \Auth::id()){
+            return redirect('/');
+        }
 
         // メッセージ編集ビューでそれを表示
         return view('tasks.edit', [
